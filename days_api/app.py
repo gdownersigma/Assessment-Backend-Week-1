@@ -36,6 +36,7 @@ def index():
 @app.route("/between",methods = ['POST'])
 def days_between():
     """Return the days between two dates."""
+    add_to_history(request)
     dates = request.json
     if 'first' not in dates or 'last' not in dates:
         return {
@@ -44,7 +45,6 @@ def days_between():
     try:
         first_date = convert_to_datetime(dates['first'])
         last_date = convert_to_datetime(dates['last'])
-        add_to_history(request)
         return {
             'days': (get_days_between(first_date,last_date))
             }, 200
@@ -52,10 +52,12 @@ def days_between():
         return {
             'error': 'Unable to convert value to datetime.'
         }, 400
-        
+
+
 @app.route("/weekday",methods = ['POST'])
 def get_weekday():
     """Return the weekday from a given date."""
+    add_to_history(request)
     resp = request.json
     if 'date' not in resp:
         return {
@@ -65,7 +67,6 @@ def get_weekday():
     try:
         given_date = convert_to_datetime(resp['date'])
         day = get_day_of_week_on(given_date)
-        add_to_history(request)
         return {
             'weekday': day
         }, 200
@@ -75,6 +76,29 @@ def get_weekday():
         }, 400
 
 
+@app.route("/history",methods = ['GET','DELETE'])
+def history():
+    """Support GET and DEL requests to the history of the API."""
+    add_to_history(request)
+    if request.method == 'GET':
+        show = 5
+        if 'number' in request.args:
+            try:
+                if '.' in request.args['number']:
+                    raise ValueError("No decimals.")
+                temp_num = int(request.args['number'])
+            except ValueError:
+                return {
+                    'error': 'Number must be an integer between 1 and 20.'
+                },400
+            if 0 < temp_num <= 20:
+                show = temp_num
+            else:
+                return {
+                    'error': 'Number must be an integer between 1 and 20.'
+                }, 400
+        return app_history[:show]
+    
 
 if __name__ == "__main__":
     app.config['TESTING'] = True

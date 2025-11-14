@@ -3,10 +3,13 @@
 from datetime import datetime, date
 
 
-def convert_to_datetime(date_val: str) -> datetime:
+def convert_to_datetime(date_val: str,is_age:bool=False) -> datetime:
     """Converts a date string into a datetime."""
     try:
-        return datetime.strptime(date_val,"%d.%m.%Y")
+        if is_age:
+            return datetime.strptime(date_val,"%Y-%m-%d") 
+        else:
+            return datetime.strptime(date_val,"%d.%m.%Y")
     except:
         raise ValueError("Unable to convert value to datetime.")
 

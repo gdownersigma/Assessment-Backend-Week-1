@@ -12,7 +12,10 @@ def convert_to_datetime(date_val: str) -> datetime:
 
 
 def get_days_between(first: datetime, last: datetime) -> int:
-    pass
+    """Find the number of days between two dates"""
+    if not isinstance(first,datetime) or not isinstance(last,datetime):
+        raise TypeError('Datetimes required.')
+    return abs((first-last).days)
 
 
 def get_day_of_week_on(date_val: datetime) -> str:

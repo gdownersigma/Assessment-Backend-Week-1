@@ -8,7 +8,6 @@ import pytest
 
 from date_functions import convert_to_datetime, get_days_between, get_day_of_week_on, get_current_age
 
-
 @pytest.mark.parametrize("inp, out", (("12.01.1999", (12, 1, 1999)),
                                       ("03.04.2004", (3, 4, 2004)),
                                       ("28.02.0100", (28, 2, 100))))

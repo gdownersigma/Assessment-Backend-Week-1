@@ -34,7 +34,7 @@ def index():
 
 
 @app.route("/between",methods = ['POST'])
-def days_between():
+def between():
     """Return the days between two dates."""
     add_to_history(request)
     dates = request.json
@@ -55,7 +55,7 @@ def days_between():
 
 
 @app.route("/weekday",methods = ['POST'])
-def get_weekday():
+def weekday():
     """Return the weekday from a given date."""
     add_to_history(request)
     resp = request.json
@@ -97,8 +97,16 @@ def history():
                 return {
                     'error': 'Number must be an integer between 1 and 20.'
                 }, 400
+        app_history.reverse()
         return app_history[:show]
     
+    elif request.method == 'DELETE':
+        clear_history()
+        return {
+            "status": "History cleared"
+        }
+
+
 
 if __name__ == "__main__":
     app.config['TESTING'] = True

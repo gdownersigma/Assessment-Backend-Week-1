@@ -1,10 +1,11 @@
 """This file defines the API routes."""
 
-# pylint: disable = no-name-in-module
+# pylint: disable = no-name-in-module,R1705, R1710
 
-from datetime import datetime, date
 
-from flask import Flask, Response, request, jsonify
+from datetime import datetime
+
+from flask import Flask, request, jsonify
 
 from date_functions import (convert_to_datetime, get_day_of_week_on,
                             get_days_between, get_current_age)
@@ -63,7 +64,7 @@ def weekday():
         return {
             'error': 'Missing required data.'
         }, 400
-    
+
     try:
         given_date = convert_to_datetime(resp['date'])
         day = get_day_of_week_on(given_date)
@@ -99,7 +100,7 @@ def history():
                 }, 400
         app_history.reverse()
         return app_history[:show]
-    
+
     elif request.method == 'DELETE':
         clear_history()
         return {
@@ -109,6 +110,7 @@ def history():
 
 @app.route("/current_age",methods = ['GET'])
 def age():
+    """Returns the current age for a certain date."""
     add_to_history(request)
     if 'date' not in request.args:
         return {
@@ -123,8 +125,6 @@ def age():
     return {
         'current_age': get_current_age(date)
     },200
-    
-    
 
 
 if __name__ == "__main__":

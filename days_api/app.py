@@ -126,7 +126,6 @@ def age():
         'current_age': get_current_age(date)
     },200
 
-
 if __name__ == "__main__":
     app.config['TESTING'] = True
     app.config['DEBUG'] = True

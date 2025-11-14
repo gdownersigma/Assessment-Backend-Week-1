@@ -28,4 +28,10 @@ def get_day_of_week_on(date_val: datetime) -> str:
 
 
 def get_current_age(birthdate: date) -> int:
-    pass
+    """Returns the current age from a given date."""
+    if not isinstance(birthdate,date):
+        raise TypeError('Date required.')
+    today = date.today()
+    age = today.year - birthdate.year - \
+        ((today.month, today.day) <(birthdate.month, birthdate.day))
+    return age

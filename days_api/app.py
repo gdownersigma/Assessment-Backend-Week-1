@@ -32,6 +32,7 @@ def index():
     """Returns an API welcome messsage."""
     return jsonify({"message": "Welcome to the Days API."})
 
+
 @app.route("/between",methods = ['POST'])
 def days_between():
     """Return the days between two dates."""
@@ -44,12 +45,35 @@ def days_between():
         first_date = convert_to_datetime(dates['first'])
         last_date = convert_to_datetime(dates['last'])
         add_to_history(request)
-        return{'days': (get_days_between(first_date,last_date))}
+        return {
+            'days': (get_days_between(first_date,last_date))
+            }, 200
     except ValueError:
         return {
             'error': 'Unable to convert value to datetime.'
         }, 400
         
+@app.route("/weekday",methods = ['POST'])
+def get_weekday():
+    """Return the weekday from a given date."""
+    resp = request.json
+    if 'date' not in resp:
+        return {
+            'error': 'Missing required data.'
+        }, 400
+    
+    try:
+        given_date = convert_to_datetime(resp['date'])
+        day = get_day_of_week_on(given_date)
+        add_to_history(request)
+        return {
+            'weekday': day
+        }, 200
+    except ValueError:
+        return {
+            'error': 'Unable to convert value to datetime.'
+        }, 400
+
 
 
 if __name__ == "__main__":

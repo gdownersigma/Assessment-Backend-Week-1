@@ -32,6 +32,25 @@ def index():
     """Returns an API welcome messsage."""
     return jsonify({"message": "Welcome to the Days API."})
 
+@app.route("/between",methods = ['POST'])
+def days_between():
+    """Return the days between two dates."""
+    dates = request.json
+    if 'first' not in dates or 'last' not in dates:
+        return {
+            'error': 'Missing required data.'
+        }, 400
+    try:
+        first_date = convert_to_datetime(dates['first'])
+        last_date = convert_to_datetime(dates['last'])
+        add_to_history(request)
+        return{'days': (get_days_between(first_date,last_date))}
+    except ValueError:
+        return {
+            'error': 'Unable to convert value to datetime.'
+        }, 400
+        
+
 
 if __name__ == "__main__":
     app.config['TESTING'] = True

@@ -15,7 +15,7 @@ def get_days_between(first: datetime, last: datetime) -> int:
     """Find the number of days between two dates"""
     if not isinstance(first,datetime) or not isinstance(last,datetime):
         raise TypeError('Datetimes required.')
-    return abs((first-last).days)
+    return (last-first).days
 
 
 def get_day_of_week_on(date_val: datetime) -> str:
